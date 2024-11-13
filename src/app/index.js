@@ -26,7 +26,7 @@ export default function Init() {
     <ScrollView style={styles.container}>
       <View style={{ flex: 1, marginTop: 100, justifyContent: 'center', alignItems: 'center' }}>
         <Text style={{ fontSize: 30 }}>Imobly</Text>
-        <Text style={{ fontSize: 16, marginVertical: 10 }}>Encontre seu imóvel dos sonhos com o Imobly.</Text>
+        <Text style={{ fontSize: 16, marginVertical: 10 }}>Compartilhe imóveis e venda com o Imobly.</Text>
         <ActivityIndicator style={{ marginVertical: 30 }} />
       </View>
     </ScrollView>

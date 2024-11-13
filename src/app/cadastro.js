@@ -24,21 +24,17 @@ export default function Cadastro() {
                         placeholder="Nome"
                         value=''
                         onChangeText=''
+                    placeholderTextColor={'#fff'}
                     />
                 </View>
 
                 <View style={styles.formGroup}>
                     <TextInput
-                        style={styles.input}
-                        placeholder="CPF"
+                        style={[styles.input, styles.nome]}
+                        placeholder="CNPJ"
                         value=''
                         onChangeText=''
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Data de Nascimento"
-                        value=''
-                        onChangeText=''
+                    placeholderTextColor={'#fff'}
                     />
                 </View>
                 <View style={styles.formGroup}>
@@ -47,6 +43,7 @@ export default function Cadastro() {
                         placeholder="Email"
                         value=''
                         onChangeText=''
+                    placeholderTextColor={'#fff'}
                     />
                 </View>
                 <View style={styles.formGroup}>
@@ -55,12 +52,14 @@ export default function Cadastro() {
                         placeholder="Cidade"
                         value=''
                         onChangeText=''
+                    placeholderTextColor={'#fff'}
                     />
                     <TextInput
                         style={styles.input}
                         placeholder="Estado"
                         value=''
                         onChangeText=''
+                    placeholderTextColor={'#fff'}
                     />
                 </View>
                 <View style={styles.formGroup}>
@@ -69,6 +68,7 @@ export default function Cadastro() {
                         placeholder="Telefone"
                         value=''
                         onChangeText=''
+                    placeholderTextColor={'#fff'}
                     />
                 </View>
                 <View style={styles.formGroup}>
@@ -78,6 +78,7 @@ export default function Cadastro() {
                         value=''
                         onChangeText=''
                         secureTextEntry
+                        placeholderTextColor={'#fff'}
                     />
                     <TextInput
                         style={styles.input}
@@ -85,6 +86,7 @@ export default function Cadastro() {
                         value=''
                         onChangeText=''
                         secureTextEntry
+                        placeholderTextColor={'#fff'}
                     />
                 </View>
             </View>
@@ -107,6 +109,7 @@ export default function Cadastro() {
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
+        backgroundColor: '#00557A',
         alignItems: 'center',
         justifyContent: 'center',
         paddingHorizontal: 20,
@@ -115,7 +118,7 @@ const styles = StyleSheet.create({
         width: '100%',
         paddingVertical: 50,
         paddingHorizontal: 30,
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#00557A',
         borderRadius: 10,
         alignItems: 'center',
         position: 'relative',
@@ -139,19 +142,19 @@ const styles = StyleSheet.create({
         width: '48%',
         height: 40,
         borderBottomWidth: 1,
-        borderBottomColor: '#000',
+        borderBottomColor: '#fff',
         marginBottom: 20,
         fontSize: 16,
     },
     signupText: {
         marginTop: 10,
         fontSize: 14,
-        color: '#000',
+        color: '#fff',
         marginBottom: 40,
     },
     signupLink: {
         fontWeight: 'bold',
-        color: '#000',
+        color: '#fff',
     },
     formGroup: {
         flexDirection: 'row',

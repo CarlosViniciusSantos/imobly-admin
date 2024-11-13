@@ -12,7 +12,7 @@ export default function Login() {
     return (
         <View style={styles.container}>
             <View style={styles.logoContainer}>
-                <Image source={require('../../assets/images/imobly-azul.png')} style={styles.logo} />
+                <Image source={require('../../assets/images/imobly-branca.png')} style={styles.logo} />
                 <Text style={styles.title}>Imobly</Text>
             </View>
 
@@ -26,6 +26,7 @@ export default function Login() {
                     placeholder="Email"
                     value=''
                     onChangeText=''
+                    placeholderTextColor={'#fff'}
                 />
                 <TextInput
                     style={styles.input}
@@ -33,6 +34,7 @@ export default function Login() {
                     value=''
                     onChangeText=''
                     secureTextEntry
+                    placeholderTextColor={'#fff'}
                 />
             </View>
 
@@ -54,7 +56,7 @@ export default function Login() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#00557A',
         alignItems: 'center',
         justifyContent: 'center',
         paddingHorizontal: 20,
@@ -73,19 +75,19 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#1E3A8A',
+        color: '#fff',
     },
     loginBox: {
         width: '100%',
         paddingVertical: 60,
         paddingHorizontal: 30,
-        backgroundColor: '#f2f2f2',
+        backgroundColor: '#00557A',
         borderRadius: 10,
         padding: 20,
         alignItems: 'center',
         position: 'relative',
         marginTop: 90,
-        marginBottom: 70
+        marginBottom: 70,
     },
     loginTitleContainer: {
         position: 'absolute',
@@ -105,18 +107,18 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 40,
         borderBottomWidth: 1,
-        borderBottomColor: '#000',
+        borderBottomColor: '#fff',
         marginBottom: 20,
         fontSize: 16,
     },
     signupText: {
         marginTop: 10,
         fontSize: 14,
-        color: '#000',
+        color: '#fff',
     },
     signupLink: {
         fontWeight: 'bold',
-        color: '#000',
+        color: '#fff',
     },
 });
 
