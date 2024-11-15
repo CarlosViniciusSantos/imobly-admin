@@ -1,18 +1,31 @@
-import { create } from "zustand"
+import { create } from "zustand";
 
 export const useLoginStore = create((set) => ({
-    accessToken: '',
-    public_id: '',
-    name: '',
-    avatar: '', 
+    id: null,
+    nome: '',
+    cnpj: '',
+    foto_perfil: '',
+    data_criacao: '',
     email: '',
+    senha: '',
+    accessToken: '',
 
-    login: (userLogin) => set({...userLogin}),
+    login: (companyLogin) => set({ ...companyLogin }),
     logout: () => set({
-        accessToken: '',
-        public_id: '',
-        name: '',
-        avatar: '', 
-        email: ''
-    })
-}))
+        id: null,
+        nome: '',
+        cnpj: '',
+        telefone: '',
+        cidade: '',
+        estado: '',
+        foto_perfil: '',
+        data_criacao: '',
+        email: '',
+        senha: '',
+        accessToken: ''
+    }),
+    updateCompany: (updatedCompany) => set((state) => ({
+        ...state,
+        ...updatedCompany
+    }))
+}));

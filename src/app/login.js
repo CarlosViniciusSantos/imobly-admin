@@ -1,12 +1,47 @@
-import { View, StyleSheet, Text, TextInput, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, TextInput, Image, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useLoginStore } from '../stores/useLoginStore';
 import Button from '../components/Button';
+import { storeObjectData } from '../utils/asyncStorage';
+import render from '../utils/render';
 
 export default function Login() {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const { login } = useLoginStore();
     const router = useRouter();
 
-    const handleLogin = () => {
-        router.replace('/home');
+    const handleLogin = async () => {
+        const loginData = {
+            email,
+            senha: password,
+        };
+
+        try {
+            const response = await fetch(`${render}auth/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(loginData),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                login({ accessToken: data.token, ...data.company });
+                await storeObjectData('userLogged', { accessToken: data.token, ...data.company });
+                router.replace('/home');
+            } else {
+                const data = await response.json();
+                Alert.alert('Erro ao logar', data.error || 'Erro desconhecido');
+                console.log(data.error);
+            }
+        } catch (error) {
+            Alert.alert('Erro ao logar', 'Erro de rede ou servidor');
+            console.error('Erro ao logar:', error);
+        }
     };
 
     return (
@@ -24,15 +59,15 @@ export default function Login() {
                 <TextInput
                     style={styles.input}
                     placeholder="Email"
-                    value=''
-                    onChangeText=''
+                    value={email}
+                    onChangeText={setEmail}
                     placeholderTextColor={'#fff'}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Senha"
-                    value=''
-                    onChangeText=''
+                    value={password}
+                    onChangeText={setPassword}
                     secureTextEntry
                     placeholderTextColor={'#fff'}
                 />
@@ -110,6 +145,7 @@ const styles = StyleSheet.create({
         borderBottomColor: '#fff',
         marginBottom: 20,
         fontSize: 16,
+        color: '#fff',
     },
     signupText: {
         marginTop: 10,

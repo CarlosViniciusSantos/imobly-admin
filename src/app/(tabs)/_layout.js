@@ -24,7 +24,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="profile"
+        name="sidebarProfile"
         options={{
           title: 'Perfil',
           tabBarIcon: ({ color }) => <Feather name="menu" size={24} color={color} />,

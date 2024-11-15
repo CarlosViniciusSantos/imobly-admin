@@ -1,13 +1,57 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TextInput, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, TextInput, ScrollView, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useLoginStore } from '../stores/useLoginStore';
 import Button from '../components/Button';
+import { storeObjectData } from '../utils/asyncStorage';
+import render from '../utils/render';
 
 export default function Cadastro() {
+    const [name, setName] = useState('');
+    const [cnpj, setCnpj] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const { login } = useLoginStore();
     const router = useRouter();
 
-    const handleRegister = () => {
-        router.replace('/home');
+    const handleRegister = async () => {
+        if (password !== confirmPassword) {
+            Alert.alert('Erro', 'As senhas não coincidem');
+            return;
+        }
+
+        const userData = {
+            nome: name,
+            cnpj,
+            email,
+            senha: password,
+        };
+
+        try {
+            const response = await fetch(`${render}companies`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data);
+                login({ accessToken: data.token, ...data.company });
+                await storeObjectData('userLogged', { accessToken: data.token, ...data.company });
+                router.replace('/login');
+            } else {
+                const data = await response.json();
+                Alert.alert('Erro ao cadastrar', data.error || 'Erro desconhecido');
+                console.log(data.error);
+            }
+        } catch (error) {
+            Alert.alert('Erro ao cadastrar', 'Erro de rede ou servidor');
+            console.error('Erro ao cadastrar:', error);
+        }
     };
 
     return (
@@ -22,9 +66,9 @@ export default function Cadastro() {
                     <TextInput
                         style={[styles.input, styles.nome]}
                         placeholder="Nome"
-                        value=''
-                        onChangeText=''
-                    placeholderTextColor={'#fff'}
+                        value={name}
+                        onChangeText={setName}
+                        placeholderTextColor={'#fff'}
                     />
                 </View>
 
@@ -32,59 +76,34 @@ export default function Cadastro() {
                     <TextInput
                         style={[styles.input, styles.nome]}
                         placeholder="CNPJ"
-                        value=''
-                        onChangeText=''
-                    placeholderTextColor={'#fff'}
+                        value={cnpj}
+                        onChangeText={setCnpj}
+                        placeholderTextColor={'#fff'}
                     />
                 </View>
                 <View style={styles.formGroup}>
                     <TextInput
                         style={[styles.input, styles.nome]}
                         placeholder="Email"
-                        value=''
-                        onChangeText=''
-                    placeholderTextColor={'#fff'}
-                    />
-                </View>
-                <View style={styles.formGroup}>
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Cidade"
-                        value=''
-                        onChangeText=''
-                    placeholderTextColor={'#fff'}
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Estado"
-                        value=''
-                        onChangeText=''
-                    placeholderTextColor={'#fff'}
-                    />
-                </View>
-                <View style={styles.formGroup}>
-                    <TextInput
-                        style={[styles.input, styles.nome]}
-                        placeholder="Telefone"
-                        value=''
-                        onChangeText=''
-                    placeholderTextColor={'#fff'}
+                        value={email}
+                        onChangeText={setEmail}
+                        placeholderTextColor={'#fff'}
                     />
                 </View>
                 <View style={styles.formGroup}>
                     <TextInput
                         style={styles.input}
                         placeholder="Senha"
-                        value=''
-                        onChangeText=''
+                        value={password}
+                        onChangeText={setPassword}
                         secureTextEntry
                         placeholderTextColor={'#fff'}
                     />
                     <TextInput
                         style={styles.input}
                         placeholder="Confirmar Senha"
-                        value=''
-                        onChangeText=''
+                        value={confirmPassword}
+                        onChangeText={setConfirmPassword}
                         secureTextEntry
                         placeholderTextColor={'#fff'}
                     />
@@ -125,8 +144,8 @@ const styles = StyleSheet.create({
         marginTop: 100
     },
     loginTitleContainer: {
-        position: 'absolute', 
-        top: -30, 
+        position: 'absolute',
+        top: -30,
         backgroundColor: '#00557A',
         paddingVertical: 20,
         paddingHorizontal: 40,
@@ -145,6 +164,7 @@ const styles = StyleSheet.create({
         borderBottomColor: '#fff',
         marginBottom: 20,
         fontSize: 16,
+        color: '#fff',
     },
     signupText: {
         marginTop: 10,
