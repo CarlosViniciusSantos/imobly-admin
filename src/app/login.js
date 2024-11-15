@@ -30,7 +30,7 @@ export default function Login() {
             if (response.ok) {
                 const data = await response.json();
                 console.log(data);
-                login({ accessToken: data.token, ...data.company });
+                login({ accessToken: data.token, ...data.usuario });
                 await storeObjectData('userLogged', { accessToken: data.token, ...data.company });
                 router.replace('/home');
             } else {
