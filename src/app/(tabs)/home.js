@@ -9,7 +9,7 @@ import { fetchAuth } from '../../utils/fetchAuth';
 
 export default function Home() {
     const router = useRouter();
-    const { id, accessToken } = useLoginStore();
+    const { id } = useLoginStore();
     const { properties, setProperties } = usePropertyStore();
     const [loading, setLoading] = useState(true);
 
@@ -33,6 +33,8 @@ export default function Home() {
         getProperties();
     }, [id]);
 
+    const filteredProperties = properties.filter(property => property.id_empresa === id);
+
     return (
         <ScrollView style={styles.container}>
             <Header />
@@ -41,7 +43,7 @@ export default function Home() {
                 {loading ? (
                     <Text>Loading...</Text>
                 ) : (
-                    properties.map((property) => (
+                    filteredProperties.map((property) => (
                         <CardProperty
                             key={property.id}
                             id={property.id}
