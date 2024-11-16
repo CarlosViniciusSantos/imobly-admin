@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal, Alert } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useLoginStore } from '../stores/useLoginStore.js';
+import { usePropertyStore } from '../stores/usePropertyStore.js';
 import render from '../utils/render.js';
 
 const ExcluirModal = ({ visible, onClose }) => {
     const [loading, setLoading] = useState(false);
-    const { id, accessToken } = useLoginStore();
+    const {accessToken } = useLoginStore();
+    const {id} = useLocalSearchParams();
     const router = useRouter();
 
     const handleDeleteAccount = async () => {
