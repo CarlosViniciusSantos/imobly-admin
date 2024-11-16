@@ -1,11 +1,23 @@
+import { useState } from 'react';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import ExcluirProperty from '../components/ExcluirProperty';
 
-export default function NavbarPadrao({ texto }) {
+export default function NavbarPadrao({ texto, trash }) {
 
   const router = useRouter();
+
+  const [modalVisibleExcluir, setModalVisibleExcluir] = useState(false);
+
+  const openModalExcluir = () => {
+    setModalVisibleExcluir(true);
+  };
+
+  const closeModalExcluir = () => {
+    setModalVisibleExcluir(false);
+  };
 
   const handleBackPress = () => {
     router.back();
@@ -18,7 +30,13 @@ export default function NavbarPadrao({ texto }) {
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
         <Text style={styles.titleText}>{texto}</Text>
+        {trash === true ?
+          <TouchableOpacity onPress={openModalExcluir} style={styles.trash}>
+            <Ionicons name="trash" size={30} color="white" />
+          </TouchableOpacity> : ''
+        }
       </View>
+      <ExcluirProperty visible={modalVisibleExcluir} onClose={closeModalExcluir} />
     </View>
   );
 }
@@ -45,4 +63,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white'
   },
+  trash: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
+  }
 });

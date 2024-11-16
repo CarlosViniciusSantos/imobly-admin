@@ -2,28 +2,18 @@ import React from 'react';
 import { useRouter } from 'expo-router';
 import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 
-export default function CardProperty() {
-
+export default function CardProperty({ id, nome, descricao, foto_imovel }) {
     const router = useRouter();
 
-    const handleSearchPress = () => {
-        router.push('/detailsProperty');
-    };
-
     return (
-        <View style={styles.companiesContainer}>
-            <View style={styles.propertyCard}>
-                <Image source={require('../../assets/images/imovel1.png')} style={styles.logo} />
-                
-                <View style={styles.propertyInfo}>
-                    <Text style={styles.propertyName}>Maré</Text>
-                    <Text style={styles.propertyDescription}>
-                        Descrição da empresa
-                    </Text>
-                    <TouchableOpacity>
-                        <Text style={styles.linkText} onPress={handleSearchPress}>Clique aqui para ver os detalhes do Imóvel</Text>
-                    </TouchableOpacity>
-                </View>
+        <View style={styles.propertyCard}>
+            <Image source={foto_imovel ? { uri: foto_imovel } : require('../../assets/images/imovel1.png')} style={styles.logo} />
+            <View style={styles.propertyInfo}>
+                <Text style={styles.propertyName}>{nome}</Text>
+                <Text style={styles.propertyDescription}>{descricao}</Text>
+                <TouchableOpacity onPress={() => router.push({pathname: '/detailsProperty', params: {id}})}>
+                    <Text style={styles.linkText}>Clique aqui para ver os detalhes do Imóvel</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );

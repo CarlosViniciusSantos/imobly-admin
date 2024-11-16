@@ -7,7 +7,7 @@ export default function CadastrarImovel() {
 
     return (
         <View style={styles.container}>
-            <NavbarPadrao texto="Atualizar Imóvel" trash={true} />
+            <NavbarPadrao texto="Atualizar Imóvel" />
             <View style={styles.container2}>
                 <ScrollView style={styles.formContainer}>
                     <Text style={styles.sectionTitle}>Onde se Localiza o Imóvel?</Text>

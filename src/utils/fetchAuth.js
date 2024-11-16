@@ -1,5 +1,6 @@
 import { useLoginStore } from "../stores/useLoginStore"
 import { storeObjectData } from "./asyncStorage"
+import render from './render'
 
 export async function fetchAuth(url, config){
     const accessToken = useLoginStore.getState().accessToken
@@ -20,7 +21,7 @@ export async function fetchAuth(url, config){
     if (responseCloned.status === 401){
         const data = await responseCloned.json()
         if(data?.error && data?.errorType === "tokenExpired"){
-            const responseRT = await fetch('http://localhost:3000/auth/refresh-token', {
+            const responseRT = await fetch(`${render}auth/refresh-token`, {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
