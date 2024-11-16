@@ -1,9 +1,65 @@
-import { View, Text, TextInput, StyleSheet, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Text, TextInput, ScrollView, Alert } from 'react-native';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import NavbarPadrao from '../components/NavbarPadrao';
 import Feather from '@expo/vector-icons/Feather';
 import ButtonDetails from '../components/ButtonDetails';
+import { useLoginStore } from '../stores/useLoginStore';
+import { usePropertyStore } from '../stores/usePropertyStore';
+import render from '../utils/render';
 
-export default function CadastrarImovel() {
+export default function AtualizarImovel() {
+    const { id: userId, accessToken } = useLoginStore();
+    const { properties, updateProperty } = usePropertyStore();
+    const router = useRouter();
+    const { id } = useLocalSearchParams();
+
+    const property = properties.find((item) => item.id === +id);
+
+    const [cep, setCep] = useState(property?.cep || '');
+    const [cidade, setCidade] = useState(property?.cidade || '');
+    const [estado, setEstado] = useState(property?.estado || '');
+    const [valor, setValor] = useState(property?.valor.toString() || '');
+    const [descricao, setDescricao] = useState(property?.descricao || '');
+    const [tipo, setTipo] = useState(property?.tipo || '');
+
+    const handleUpdateProperty = async () => {
+        const propertyData = {
+            cep,
+            cidade,
+            estado,
+            valor: parseInt(valor),
+            descricao,
+            tipo,
+            id_empresa: parseInt(userId),
+        };
+
+        try {
+            const response = await fetch(`${render}properties/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+                body: JSON.stringify(propertyData),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Response data:', data);
+                updateProperty(data);
+                Alert.alert('Sucesso', 'Imóvel atualizado com sucesso');
+                router.replace('/home');
+            } else {
+                const data = await response.json();
+                Alert.alert('Erro ao atualizar', data.error || 'Erro desconhecido');
+                console.log(data.error);
+            }
+        } catch (error) {
+            Alert.alert('Erro ao atualizar', 'Erro de rede ou servidor');
+            console.error('Erro ao atualizar:', error);
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -11,53 +67,27 @@ export default function CadastrarImovel() {
             <View style={styles.container2}>
                 <ScrollView style={styles.formContainer}>
                     <Text style={styles.sectionTitle}>Onde se Localiza o Imóvel?</Text>
-
                     <TextInput
                         style={styles.input}
                         placeholder="CEP"
-                        value=''
-                        onChangeText=''
+                        value={cep}
+                        onChangeText={setCep}
                     />
-
                     <View style={styles.row}>
                         <TextInput
                             style={[styles.input, styles.smallInput]}
                             placeholder="Cidade"
-                            value=''
-                            onChangeText=''
+                            value={cidade}
+                            onChangeText={setCidade}
                         />
                         <TextInput
                             style={[styles.input, styles.smallInput]}
                             placeholder="Estado"
-                            value=''
-                            onChangeText=''
+                            value={estado}
+                            onChangeText={setEstado}
                         />
                     </View>
-
-                    <View style={styles.row}>
-                        <TextInput
-                            style={[styles.input, styles.largeInput]}
-                            placeholder="Logradouro"
-                            value=''
-                            onChangeText=''
-                        />
-                        <TextInput
-                            style={[styles.input, styles.smallInput]}
-                            placeholder="Número"
-                            value=''
-                            onChangeText=''
-                        />
-                    </View>
-
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Complemento"
-                        value=''
-                        onChangeText=''
-                    />
-
                     <Text style={styles.sectionTitle}>Fotos do Imovel</Text>
-
                     <View style={styles.row2}>
                         <Feather name="image" size={40} color="black" />
                         <Feather name="image" size={40} color="black" />
@@ -67,61 +97,29 @@ export default function CadastrarImovel() {
                         <Feather name="image" size={40} color="black" />
                         <Feather name="image" size={40} color="black" />
                     </View>
-
                     <Text style={styles.sectionTitle}>Digite Informações do Imóvel</Text>
-
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Tipo de imóvel"
-                        value=''
-                        onChangeText=''
-                    />
-                    <TextInput
-                        style={styles.input}
-                        placeholder="Transação"
-                        value=''
-                        onChangeText=''
-                    />
                     <TextInput
                         style={styles.input}
                         placeholder="Valor"
-                        value=''
-                        onChangeText=''
+                        value={valor}
+                        onChangeText={setValor}
                         keyboardType="numeric"
                     />
                     <TextInput
                         style={styles.input}
-                        placeholder="Metragem"
-                        value=''
-                        onChangeText=''
-                        keyboardType="numeric"
+                        placeholder="Tipo de imóvel"
+                        value={tipo}
+                        onChangeText={setTipo}
                     />
-
-                    <View style={styles.row}>
-                        <TextInput
-                            style={[styles.input, styles.smallInput]}
-                            placeholder="Cômodos"
-                            value=''
-                            onChangeText=''
-                        />
-                        <TextInput
-                            style={[styles.input, styles.smallInput]}
-                            placeholder="Vagas de Garagem"
-                            value=''
-                            onChangeText=''
-                        />
-                    </View>
-
                     <TextInput
                         style={[styles.input, styles.description]}
                         placeholder="Descrição do Imóvel"
-                        value=''
-                        onChangeText=''
+                        value={descricao}
+                        onChangeText={setDescricao}
                         multiline
                     />
-
                     <View style={styles.buttonContainer}>
-                        <ButtonDetails>Atualizar</ButtonDetails>
+                        <ButtonDetails onPress={handleUpdateProperty}>Atualizar</ButtonDetails>
                     </View>
                 </ScrollView>
             </View>

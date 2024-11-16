@@ -18,7 +18,7 @@ const DetailsProperty = () => {
     const property = properties.find((item) => item.id === +id)
 
     const handleSearchPress = () => {
-        router.push('/updateProperty');
+        router.push({pathname: '/updateProperty', params: {id}})
     };
 
     return (
