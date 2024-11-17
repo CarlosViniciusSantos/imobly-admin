@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TextInput, Image, Alert } from 'react-native';
+import { View, StyleSheet, Text, TextInput, Image, Alert, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useLoginStore } from '../stores/useLoginStore';
 import Button from '../components/Button';
@@ -9,6 +9,7 @@ import render from '../utils/render';
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
     const { login } = useLoginStore();
     const router = useRouter();
 
@@ -17,6 +18,8 @@ export default function Login() {
             email,
             senha: password,
         };
+
+        setLoading(true);
 
         try {
             const response = await fetch(`${render}auth/login`, {
@@ -41,6 +44,8 @@ export default function Login() {
         } catch (error) {
             Alert.alert('Erro ao logar', 'Erro de rede ou servidor');
             console.error('Erro ao logar:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -73,8 +78,9 @@ export default function Login() {
                 />
             </View>
 
-            <Button onPress={handleLogin}>Entrar</Button>
-
+            <Button onPress={handleLogin} disabled={loading}>
+                {loading ? <ActivityIndicator color="#fff" /> : 'Entrar'}
+            </Button>
             <Text style={styles.signupText}>
                 Não tem conta?{' '}
                 <Text
@@ -126,7 +132,7 @@ const styles = StyleSheet.create({
     },
     loginTitleContainer: {
         position: 'absolute',
-        top: -30, 
+        top: -30,
         backgroundColor: '#00557A',
         paddingVertical: 20,
         paddingHorizontal: 40,

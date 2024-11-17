@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TextInput, ScrollView, Alert } from 'react-native';
+import { View, StyleSheet, Text, TextInput, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useLoginStore } from '../stores/useLoginStore';
 import Button from '../components/Button';
@@ -12,6 +12,7 @@ export default function Cadastro() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [loading, setLoading] = useState(false);
     const { login } = useLoginStore();
     const router = useRouter();
 
@@ -27,6 +28,8 @@ export default function Cadastro() {
             email,
             senha: password,
         };
+
+        setLoading(true);
 
         try {
             const response = await fetch(`${render}companies`, {
@@ -51,6 +54,8 @@ export default function Cadastro() {
         } catch (error) {
             Alert.alert('Erro ao cadastrar', 'Erro de rede ou servidor');
             console.error('Erro ao cadastrar:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -110,7 +115,9 @@ export default function Cadastro() {
                 </View>
             </View>
 
-            <Button onPress={handleRegister}>Cadastrar</Button>
+            <Button onPress={handleRegister} disabled={loading}>
+                {loading ? <ActivityIndicator color="#fff" /> : 'Cadastrar'}
+            </Button>
 
             <Text style={styles.signupText}>
                 Já tem uma conta?{' '}

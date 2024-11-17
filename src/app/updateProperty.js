@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, TextInput, ScrollView, Alert } from 'react-native';
+import { View, StyleSheet, Text, TextInput, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import NavbarPadrao from '../components/NavbarPadrao';
 import ButtonDetails from '../components/ButtonDetails';
@@ -23,6 +23,7 @@ export default function AtualizarImovel() {
     const [valor, setValor] = useState(property?.valor.toString() || '');
     const [descricao, setDescricao] = useState(property?.descricao || '');
     const [tipo, setTipo] = useState(property?.tipo || '');
+    const [loading, setLoading] = useState(false);
 
     const handleUpdateProperty = async () => {
         const propertyData = {
@@ -36,6 +37,8 @@ export default function AtualizarImovel() {
             tipo,
             id_empresa: parseInt(userId),
         };
+
+        setLoading(true);
 
         try {
             const response = await fetch(`${render}properties/${id}`, {
@@ -61,6 +64,8 @@ export default function AtualizarImovel() {
         } catch (error) {
             Alert.alert('Erro ao atualizar', 'Erro de rede ou servidor');
             console.error('Erro ao atualizar:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -125,7 +130,9 @@ export default function AtualizarImovel() {
                         multiline
                     />
                     <View style={styles.buttonContainer}>
-                        <ButtonDetails onPress={handleUpdateProperty}>Atualizar</ButtonDetails>
+                        <ButtonDetails onPress={handleUpdateProperty} disabled={loading}>
+                            {loading ? <ActivityIndicator color="#fff" /> : 'Atualizar'}
+                        </ButtonDetails>
                     </View>
                 </ScrollView>
             </View>

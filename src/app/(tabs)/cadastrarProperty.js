@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import NavbarPadrao from '../../components/NavbarPadrao';
 import ButtonDetails from '../../components/ButtonDetails';
 import { useRouter } from 'expo-router';
@@ -18,6 +18,7 @@ export default function CadastrarImovel() {
     const [valor, setValor] = useState('');
     const [descricao, setDescricao] = useState('');
     const [tipo, setTipo] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const handleRegister = async () => {
         const propertyData = {
@@ -31,6 +32,8 @@ export default function CadastrarImovel() {
             tipo,
             id_empresa: parseInt(id),
         };
+
+        setLoading(true);
 
         try {
             const response = await fetch(`${render}properties`, {
@@ -63,12 +66,14 @@ export default function CadastrarImovel() {
         } catch (error) {
             Alert.alert('Erro ao cadastrar', 'Erro de rede ou servidor');
             console.error('Erro ao cadastrar:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <View style={styles.container}>
-            <NavbarPadrao texto="Cadastrar Imóvel"/>
+            <NavbarPadrao texto="Cadastrar Imóvel" />
             <View style={styles.container2}>
                 <ScrollView style={styles.formContainer}>
                     <Text style={styles.sectionTitle}>Onde se Localiza o Imóvel?</Text>
@@ -128,7 +133,9 @@ export default function CadastrarImovel() {
                         multiline
                     />
                     <View style={styles.buttonContainer}>
-                        <ButtonDetails onPress={handleRegister}>Cadastrar</ButtonDetails>
+                        <ButtonDetails onPress={handleRegister} disabled={loading}>
+                            {loading ? <ActivityIndicator color="#fff" /> : 'Cadastrar'}
+                        </ButtonDetails>
                     </View>
                 </ScrollView>
             </View>
