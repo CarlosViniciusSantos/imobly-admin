@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TextInput, ScrollView, Alert } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import NavbarPadrao from '../components/NavbarPadrao';
-import Feather from '@expo/vector-icons/Feather';
 import ButtonDetails from '../components/ButtonDetails';
 import { useLoginStore } from '../stores/useLoginStore';
 import { usePropertyStore } from '../stores/usePropertyStore';
@@ -19,15 +18,19 @@ export default function AtualizarImovel() {
     const [cep, setCep] = useState(property?.cep || '');
     const [cidade, setCidade] = useState(property?.cidade || '');
     const [estado, setEstado] = useState(property?.estado || '');
+    const [fotoImovel, setFotoImovel] = useState(property?.foto_imovel || '');
+    const [nome, setNome] = useState(property?.nome || '');
     const [valor, setValor] = useState(property?.valor.toString() || '');
     const [descricao, setDescricao] = useState(property?.descricao || '');
     const [tipo, setTipo] = useState(property?.tipo || '');
 
     const handleUpdateProperty = async () => {
         const propertyData = {
+            nome,
             cep,
             cidade,
             estado,
+            foto_imovel: fotoImovel,
             valor: parseInt(valor),
             descricao,
             tipo,
@@ -88,16 +91,19 @@ export default function AtualizarImovel() {
                         />
                     </View>
                     <Text style={styles.sectionTitle}>Fotos do Imovel</Text>
-                    <View style={styles.row2}>
-                        <Feather name="image" size={40} color="black" />
-                        <Feather name="image" size={40} color="black" />
-                        <Feather name="image" size={40} color="black" />
-                        <Feather name="image" size={40} color="black" />
-                        <Feather name="image" size={40} color="black" />
-                        <Feather name="image" size={40} color="black" />
-                        <Feather name="image" size={40} color="black" />
-                    </View>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Url da Foto"
+                        value={fotoImovel}
+                        onChangeText={setFotoImovel}
+                    />
                     <Text style={styles.sectionTitle}>Digite Informações do Imóvel</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Nome"
+                        value={nome}
+                        onChangeText={setNome}
+                    />
                     <TextInput
                         style={styles.input}
                         placeholder="Valor"

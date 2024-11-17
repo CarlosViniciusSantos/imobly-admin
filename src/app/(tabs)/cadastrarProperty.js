@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, Alert } from 'react-native';
 import NavbarPadrao from '../../components/NavbarPadrao';
-import Feather from '@expo/vector-icons/Feather';
 import ButtonDetails from '../../components/ButtonDetails';
 import { useRouter } from 'expo-router';
 import { useLoginStore } from '../../stores/useLoginStore';
@@ -11,19 +10,23 @@ export default function CadastrarImovel() {
     const { id, accessToken } = useLoginStore();
     const router = useRouter();
 
+    const [nome, setNome] = useState('');
     const [cep, setCep] = useState('');
     const [cidade, setCidade] = useState('');
     const [estado, setEstado] = useState('');
+    const [fotoImovel, setFotoImovel] = useState('');
     const [valor, setValor] = useState('');
     const [descricao, setDescricao] = useState('');
     const [tipo, setTipo] = useState('');
 
     const handleRegister = async () => {
         const propertyData = {
+            nome,
             cep,
             cidade,
             estado,
-            valor: parseFloat(valor),
+            foto_imovel: fotoImovel,
+            valor: parseInt(valor),
             descricao,
             tipo,
             id_empresa: parseInt(id),
@@ -44,6 +47,14 @@ export default function CadastrarImovel() {
                 console.log(data);
                 Alert.alert('Sucesso', 'Imóvel cadastrado com sucesso');
                 router.replace('/home');
+                setCep('');
+                setCidade('');
+                setEstado('');
+                setFotoImovel('');
+                setNome('');
+                setValor('');
+                setDescricao('');
+                setTipo('');
             } else {
                 const data = await response.json();
                 Alert.alert('Erro ao cadastrar', data.error || 'Erro desconhecido');
@@ -82,16 +93,20 @@ export default function CadastrarImovel() {
                         />
                     </View>
                     <Text style={styles.sectionTitle}>Fotos do Imovel</Text>
-                    <View style={styles.row2}>
-                        <Feather name="image" size={40} color="black" />
-                        <Feather name="image" size={40} color="black" />
-                        <Feather name="image" size={40} color="black" />
-                        <Feather name="image" size={40} color="black" />
-                        <Feather name="image" size={40} color="black" />
-                        <Feather name="image" size={40} color="black" />
-                        <Feather name="image" size={40} color="black" />
-                    </View>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="URL da Foto"
+                        value={fotoImovel}
+                        onChangeText={setFotoImovel}
+                        keyboardType='url'
+                    />
                     <Text style={styles.sectionTitle}>Digite Informações do Imóvel</Text>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Nome"
+                        value={nome}
+                        onChangeText={setNome}
+                    />
                     <TextInput
                         style={styles.input}
                         placeholder="Valor"

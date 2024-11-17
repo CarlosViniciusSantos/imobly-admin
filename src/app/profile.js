@@ -14,6 +14,7 @@ export default function AtualizarDadosUser() {
     const [name, setName] = useState(nome || '');
     const [cnpjState, setCnpj] = useState(cnpj || '');
     const [emailState, setEmail] = useState(email || '');
+    const [fotoPerfilState, setFotoPerfil] = useState(foto_perfil || '');
     const [companyId, setCompanyId] = useState(id || '');
     const [token, setToken] = useState(accessToken || '');
 
@@ -21,6 +22,7 @@ export default function AtualizarDadosUser() {
         setName(nome);
         setCnpj(cnpj);
         setEmail(email);
+        setFotoPerfil(foto_perfil);
         setCompanyId(id);
         setToken(accessToken);
     }, [nome, cnpj, email, id, accessToken]);
@@ -30,6 +32,7 @@ export default function AtualizarDadosUser() {
             nome: name,
             cnpj: cnpjState,
             email: emailState,
+            foto_perfil: fotoPerfilState,
         };
         try {
             const response = await fetch(`${render}companies/${companyId}`, {
@@ -93,6 +96,12 @@ export default function AtualizarDadosUser() {
                         placeholder="Email"
                         value={emailState}
                         onChangeText={setEmail}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder="URL da foto"
+                        value={fotoPerfilState}
+                        onChangeText={setFotoPerfil}
                     />
                 </View>
             </ScrollView>

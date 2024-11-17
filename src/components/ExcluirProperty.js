@@ -9,13 +9,14 @@ import render from '../utils/render.js';
 const ExcluirModal = ({ visible, onClose }) => {
     const [loading, setLoading] = useState(false);
     const {accessToken } = useLoginStore();
+    const { deleteProperty } = usePropertyStore();
     const {id} = useLocalSearchParams();
     const router = useRouter();
 
     const handleDeleteAccount = async () => {
         setLoading(true);
         try {
-            const deleteResponse = await fetch(`${render}properties/${id}`, {
+            const deleteResponse = await fetch(`${render}properties/${+id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${accessToken}`, 
@@ -25,16 +26,17 @@ const ExcluirModal = ({ visible, onClose }) => {
 
             if (deleteResponse.ok) {
                 console.log('Imóvel excluído com sucesso');
+                deleteProperty(+id);
                 Alert.alert('Sucesso', 'Imóvel excluído com sucesso');
                 onClose();
                 router.replace('/home');
             } else {
-                console.log('Erro ao excluir imóvel');
-                Alert.alert('Erro', 'Erro ao excluir imóvel');
+                console.log('Erro ao excluir imóvel1');
+                Alert.alert('Erro', 'Erro ao excluir imóvel2');
             }
         } catch (error) {
-            console.error('Erro ao excluir imóvel:', error);
-            Alert.alert('Erro', 'Erro ao excluir imóvel');
+            console.error('Erro ao excluir imóvel3:', error);
+            Alert.alert('Erro', 'Erro ao excluir imóvel4');
         } finally {
             setLoading(false);
         }

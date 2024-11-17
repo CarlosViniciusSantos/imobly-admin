@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 import Header from '../../components/Header';
 import CardProperty from '../../components/CardProperty';
 import { useLoginStore } from '../../stores/useLoginStore';
@@ -17,8 +19,8 @@ export default function Home() {
         router.push('/cadastrarProperty');
     };
 
-    useEffect(() => {
-        const getProperties = async () => {
+    const getProperties = async () => {
+        try {
             const response = await fetchAuth(`${render}properties/list`);
             if (response.ok) {
                 const data = await response.json();
@@ -27,11 +29,18 @@ export default function Home() {
             } else {
                 console.log('Erro ao carregar imóveis');
             }
+        } catch (error) {
+            console.error('Erro ao carregar imóveis:', error);
+        } finally {
             setLoading(false);
-        };
+        }
+    };
 
-        getProperties();
-    }, [id]);
+    useFocusEffect(
+        React.useCallback(() => {
+            getProperties();
+        }, [])
+    );
 
     const filteredProperties = properties.filter(property => property.id_empresa === id);
 
