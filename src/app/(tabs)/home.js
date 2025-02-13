@@ -42,7 +42,7 @@ export default function Home() {
         }, [])
     );
 
-    const filteredProperties = properties.filter(property => property.id_empresa === id);
+    const filteredProperties = properties.error !== "No properties found"? properties.filter(property => property.id_empresa === id): [];
 
     return (
         <ScrollView style={styles.container}>
@@ -57,7 +57,7 @@ export default function Home() {
                             key={property.id}
                             id={property.id}
                             descricao={property.descricao}
-                            foto_imovel={property.foto_imovel}
+                            foto={property.foto}
                             nome={property.nome}
                         />
                     ))

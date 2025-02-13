@@ -25,7 +25,7 @@ const DetailsProperty = () => {
         <View style={styles.container}>
             <NavbarPadrao texto="Detalhes" trash={true}/>
             <ScrollView contentContainerStyle={styles.scrollContent}>
-                <Image source={property?.foto_imovel ? { uri: property.foto_imovel } : require('../../assets/images/imovel1.png')} style={styles.image} />
+                <Image source={property?.foto ? { uri: property.foto } : require('../../assets/images/imovel1.png')} style={styles.image} />
                 <View style={styles.content}>
                     <View style={styles.tagContainer}>
                         <Text style={styles.tag}>{property?.nome}</Text>
@@ -33,7 +33,7 @@ const DetailsProperty = () => {
                     <Text style={styles.price}>R$ {property?.valor} total</Text>
                     <View style={styles.separator} />
                     <Text style={styles.type}>{property?.tipo}</Text>
-                    <Text style={styles.address}>{property?.cidade}</Text>
+                    <Text style={styles.address}>{property?.cidade}-{property?.estado}</Text>
                     <Text style={styles.details}>{property?.descricao}</Text>
                 </View>
             </ScrollView>

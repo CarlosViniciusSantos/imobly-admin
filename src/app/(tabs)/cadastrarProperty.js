@@ -26,7 +26,7 @@ export default function CadastrarImovel() {
             cep,
             cidade,
             estado,
-            foto_imovel: fotoImovel,
+            foto: fotoImovel,
             valor: parseInt(valor),
             descricao,
             tipo,
@@ -134,7 +134,7 @@ export default function CadastrarImovel() {
                     />
                     <View style={styles.buttonContainer}>
                         <ButtonDetails onPress={handleRegister} disabled={loading}>
-                            {loading ? <ActivityIndicator color="#fff" /> : 'Cadastrar'}
+                            {loading ? <ActivityIndicator color="#fff" /> : <Text>Cadastrar</Text>}
                         </ButtonDetails>
                     </View>
                 </ScrollView>

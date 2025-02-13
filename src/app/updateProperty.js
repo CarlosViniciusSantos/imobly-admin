@@ -18,7 +18,7 @@ export default function AtualizarImovel() {
     const [cep, setCep] = useState(property?.cep || '');
     const [cidade, setCidade] = useState(property?.cidade || '');
     const [estado, setEstado] = useState(property?.estado || '');
-    const [fotoImovel, setFotoImovel] = useState(property?.foto_imovel || '');
+    const [fotoImovel, setFotoImovel] = useState(property?.foto || '');
     const [nome, setNome] = useState(property?.nome || '');
     const [valor, setValor] = useState(property?.valor.toString() || '');
     const [descricao, setDescricao] = useState(property?.descricao || '');
@@ -31,7 +31,7 @@ export default function AtualizarImovel() {
             cep,
             cidade,
             estado,
-            foto_imovel: fotoImovel,
+            foto: fotoImovel,
             valor: parseInt(valor),
             descricao,
             tipo,
@@ -131,7 +131,7 @@ export default function AtualizarImovel() {
                     />
                     <View style={styles.buttonContainer}>
                         <ButtonDetails onPress={handleUpdateProperty} disabled={loading}>
-                            {loading ? <ActivityIndicator color="#fff" /> : 'Atualizar'}
+                            {loading ? <ActivityIndicator color="#fff" /> : <Text>Atualizar</Text>}
                         </ButtonDetails>
                     </View>
                 </ScrollView>

@@ -2,12 +2,12 @@ import React from 'react';
 import { useRouter } from 'expo-router';
 import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 
-export default function CardProperty({ id, nome, descricao, foto_imovel }) {
+export default function CardProperty({ id, nome, descricao, foto }) {
     const router = useRouter();
 
     return (
         <View style={styles.propertyCard}>
-            <Image source={foto_imovel ? { uri: foto_imovel } : require('../../assets/images/imovel1.png')} style={styles.logo} />
+            <Image source={foto ? { uri: foto } : require('../../assets/images/imovel1.png')} style={styles.logo} />
             <View style={styles.propertyInfo}>
                 <Text style={styles.propertyName}>{nome}</Text>
                 <Text style={styles.propertyDescription}>{descricao}</Text>
